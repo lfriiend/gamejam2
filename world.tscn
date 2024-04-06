@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://baoptiwt6ys6v"]
+[gd_scene load_steps=7 format=3 uid="uid://baoptiwt6ys6v"]
 
-[ext_resource type="PackedScene" uid="uid://ctgs0qf7ynqac" path="res://player.tscn" id="1_pvx5d"]
+[ext_resource type="Script" path="res://SCRIPTS/player.gd" id="1_a2uvc"]
+[ext_resource type="ArrayMesh" uid="uid://dcgvxsxxxhnqh" path="res://OBJECTS/latern/lantern.obj" id="2_hley8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8famy"]
 size = Vector3(20, 1, 20)
@@ -8,7 +9,12 @@ size = Vector3(20, 1, 20)
 [sub_resource type="BoxMesh" id="BoxMesh_av3yo"]
 size = Vector3(20, 1, 20)
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_7lnun"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5780r"]
+
 [node name="World" type="Node3D"]
+transform = Transform3D(1.025, 0, 0, 0, 1.025, 0, 0, 0, 1.025, -0.0165596, 0.0397911, 0.00120068)
 
 [node name="Ground" type="StaticBody3D" parent="."]
 
@@ -18,4 +24,25 @@ shape = SubResource("BoxShape3D_8famy")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
 mesh = SubResource("BoxMesh_av3yo")
 
-[node name="Player" parent="." instance=ExtResource("1_pvx5d")]
+[node name="play" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5474, 0)
+script = ExtResource("1_a2uvc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="play"]
+mesh = SubResource("CapsuleMesh_7lnun")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="play"]
+shape = SubResource("CapsuleShape3D_5780r")
+
+[node name="Head" type="Node3D" parent="play"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.14456, 0)
+
+[node name="HeadXRotation" type="Node3D" parent="play/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125399, 0)
+
+[node name="Camera3D" type="Camera3D" parent="play/Head/HeadXRotation"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0346438, 0)
+
+[node name="Lantern" type="MeshInstance3D" parent="play"]
+transform = Transform3D(-0.108005, 0, 0.0208552, 0, 0.11, 0, -0.0208552, 0, -0.108005, 1.52915, 0.413509, -1.06907)
+mesh = ExtResource("2_hley8")

@@ -1,26 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://ctgs0qf7ynqac"]
+[gd_scene load_steps=2 format=3 uid="uid://ctgs0qf7ynqac"]
 
 [ext_resource type="Script" path="res://SCRIPTS/player.gd" id="1_kpual"]
-[ext_resource type="ArrayMesh" uid="uid://dcgvxsxxxhnqh" path="res://OBJECTS/latern/lantern.obj" id="1_m1jdi"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ynalk"]
-height = 2.5
 
 [node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.998517, 0)
 script = ExtResource("1_kpual")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_ynalk")
-
-[node name="Head" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.681659, 0)
-
-[node name="HeadXRotation" type="Node3D" parent="Head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125399, 0)
-
-[node name="Camera3D" type="Camera3D" parent="Head/HeadXRotation"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0346438, 0)
-
-[node name="Lantern" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.11, 0, -1.66095e-08, 0, 0.11, 0, 1.66095e-08, 0, -0.11, 0.996913, 0.102478, -0.712619)
-mesh = ExtResource("1_m1jdi")
