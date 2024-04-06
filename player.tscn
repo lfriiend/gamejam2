@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://ctgs0qf7ynqac"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ynalk"]
+height = 2.5
+
+[node name="Player" type="CharacterBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_ynalk")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.681659, 0)
+
+[node name="HeadXRotation" type="Node3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125399, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head/HeadXRotation"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0346438, 0)
+
+[node name="Flashlight" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Flashlight"]
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Flashlight/MeshInstance3D"]
