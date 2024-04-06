@@ -98,14 +98,7 @@ func _physics_process(delta):
 		velocity.x = lerp(velocity.x, direction.x * speed, delta * 2.0)
 		velocity.z = lerp(velocity.z, direction.z * speed, delta * 2.0)
 			
-	if Input.is_action_just_pressed('pause'):
-		capMouse = !capMouse
-		
-		if capMouse:
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		else:
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	
+
 	#head bob
 	t_bob += delta * velocity.length() * float(is_on_floor())
 	camera.transform.origin = _headbob(t_bob)
@@ -124,7 +117,7 @@ func _input(event: InputEvent):
 		get_tree().quit()
 	
 func _rotate_cammera(delta: float, sens_mod: float = 1.0):
-	var input = Input.get_vector("look_left", "look_right", "look_down", "look_up")
+	var input = Input.get_vector("ui_left", "ui_right", "ui_down", "ui_up")
 	look_dir += input
 	rotation.y -= look_dir.x * camera_sens * delta
 	camera.rotation.x = clamp(camera.rotation.x - look_dir.y * camera_sens * sens_mod * delta, -1.5, 1.5)
