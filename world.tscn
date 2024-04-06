@@ -1,7 +1,22 @@
-[gd_scene load_steps=9 format=3 uid="uid://baoptiwt6ys6v"]
+[gd_scene load_steps=12 format=3 uid="uid://baoptiwt6ys6v"]
 
 [ext_resource type="Script" path="res://SCRIPTS/player.gd" id="1_a2uvc"]
 [ext_resource type="ArrayMesh" uid="uid://dcgvxsxxxhnqh" path="res://OBJECTS/latern/lantern.obj" id="2_hley8"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_eyeem"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_du0ic"]
+sky_material = SubResource("ProceduralSkyMaterial_eyeem")
+
+[sub_resource type="Environment" id="Environment_u03rs"]
+background_mode = 2
+background_energy_multiplier = 0.5
+sky = SubResource("Sky_du0ic")
+tonemap_mode = 2
+glow_enabled = true
+volumetric_fog_enabled = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8famy"]
 size = Vector3(20, 1, 20)
@@ -10,7 +25,6 @@ size = Vector3(20, 1, 20)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_icc4o"]
 next_pass = SubResource("CanvasItemMaterial_xynib")
-albedo_color = Color(0.317647, 0.243137, 1, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_av3yo"]
 material = SubResource("StandardMaterial3D_icc4o")
@@ -23,12 +37,24 @@ size = Vector3(20, 1, 20)
 [node name="World" type="Node3D"]
 transform = Transform3D(1.025, 0, 0, 0, 1.025, 0, 0, 0, 1.025, -0.0165596, 0.0397911, 0.00120068)
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_u03rs")
+
 [node name="Ground" type="StaticBody3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
 shape = SubResource("BoxShape3D_8famy")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BoxMesh_av3yo")
+
+[node name="Wall" type="StaticBody3D" parent="."]
+transform = Transform3D(0.999999, 0, 0, 0, -4.37114e-08, -0.999999, 0, 0.999999, -4.37114e-08, 0, -1.27372, -9.49214)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall"]
+shape = SubResource("BoxShape3D_8famy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall"]
 mesh = SubResource("BoxMesh_av3yo")
 
 [node name="Player" type="CharacterBody3D" parent="."]
@@ -52,3 +78,9 @@ transform = Transform3D(0.491935, 0, 0, 0, 0.939443, -0.263182, 0, 1.69508, 6.05
 transform = Transform3D(-0.110705, 0, 0.0213766, 1.41493e-05, 0.11275, 7.32767e-05, -0.0213765, 7.46302e-05, -0.110705, 1.56738, -0.912331, -1.07841)
 mesh = ExtResource("2_hley8")
 skeleton = NodePath("../../..")
+
+[node name="Hand" type="Node3D" parent="Player"]
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Player/Hand"]
+spot_range = 10.0
+spot_angle = 15.0

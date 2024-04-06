@@ -60,17 +60,29 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var look_dir: Vector2
 @onready var camera = $Head/Camera3D
+
+@onready var hand = $Hand
+@onready var flashlight = $Hand/SpotLight3D
 var camera_sens = 50
+
 
 var capMouse = false
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
+
+func _input(event):
+	if event is InputEventMouseMotion:
+		head_y_axis += event.relative.x * cameraSensitivity
+		camera_x_axis += event.relative.y * cameraSensitivity
+		camera_x_axis = clamp(camera_x_axis, -90.0, 90)
+
 func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
+
 
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
@@ -81,6 +93,20 @@ func _physics_process(delta):
 		speed = SPRINT_SPEED
 	else:
 		speed = WALK_SPEED
+
+
+func _process(delta):
+	direction = Input.get_axis("left", "right") * head.basis.x + Input.get_axis("forward", "backward") * head.basis.z
+	velocity = velocity.lerp(direction * playerSpeed + velocity.y * Vector3.UP, playerAcceleration * delta)
+	
+	head.rotation.y = lerp(head.rotation.y, -deg_to_rad(head_y_axis), cameraAcceleration * delta)
+	camera.rotation.x = lerp(camera.rotation.x, -deg_to_rad(camera_x_axis), cameraAcceleration * delta)
+	
+	hand.rotation.y = -deg_to_rad(head_y_axis)
+	flashlight.rotation = -deg_to_rad(camera_x_axis)
+	
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		velocity.y += jumpForce
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -94,6 +120,7 @@ func _physics_process(delta):
 		else:
 			velocity.x = lerp(velocity.x, direction.x * speed, delta * 7.0)
 			velocity.z = lerp(velocity.z, direction.z * speed, delta * 7.0)
+
 	else:
 		velocity.x = lerp(velocity.x, direction.x * speed, delta * 2.0)
 		velocity.z = lerp(velocity.z, direction.z * speed, delta * 2.0)
