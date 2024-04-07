@@ -36,7 +36,7 @@ func _process(delta):
 	camera.rotation.x = lerp(camera.rotation.x, -deg_to_rad(camera_x_axis), cameraAcceleration * delta)
 	
 	hand.rotation.y = -deg_to_rad(head_y_axis)
-	flashlight.rotation = -deg_to_rad(camera_x_axis)
+	flashlight.rotation.x = -deg_to_rad(camera_x_axis)
 	
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y += jumpForce
